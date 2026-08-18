@@ -43,8 +43,8 @@ function Login() {
     }
 
     try {
-      // Using Vercel Environment Variable for Backend API
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, {
+      // Direct hardcoded Render backend URL to avoid any environment variable issues
+      const response = await axios.post("https://trafficsetu.onrender.com/api/auth/login", {
         email: formData.email,
         password: formData.password,
       });
