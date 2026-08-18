@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   ArrowLeft,
   MapPin,
@@ -21,12 +21,12 @@ function ComplaintDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch complaint details from backend
+  // Fetch complaint details from Render backend
   useEffect(() => {
     const fetchComplaintDetails = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(`http://localhost:5000/api/complaints/${id}`, {
+        const response = await axios.get(`https://trafficsetu.onrender.com/api/complaints/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -51,7 +51,7 @@ function ComplaintDetails() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.patch(
-        `http://localhost:5000/api/complaints/${id}/status`,
+        `https://trafficsetu.onrender.com/api/complaints/${id}/status`,
         { status: newStatus },
         {
           headers: {
@@ -193,7 +193,7 @@ function ComplaintDetails() {
         {complaint.evidence ? (
           <div className="border border-slate-200 rounded-xl p-4">
             <a
-              href={`http://localhost:5000/${complaint.evidence}`}
+              href={`https://trafficsetu.onrender.com/${complaint.evidence}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-600 font-medium hover:underline flex items-center gap-2"
