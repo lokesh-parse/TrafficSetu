@@ -28,7 +28,6 @@ function NotFound() {
         <h1 className="text-4xl font-bold text-slate-900">
           404
         </h1>
-
         <p className="mt-2 text-slate-600">
           TrafficSetu - Page Not Found
         </p>
@@ -133,14 +132,14 @@ function AppRoutes() {
 
 
         {/* =========================
-            DEFAULT ROUTE
+            DEFAULT ROUTE (Redirects to Login)
         ========================= */}
 
         <Route
           path="/"
           element={
             <Navigate
-              to="/citizen/dashboard"
+              to="/login"
               replace
             />
           }
