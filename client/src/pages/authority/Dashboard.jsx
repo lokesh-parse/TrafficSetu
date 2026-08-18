@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import {
+  ArrowLeft,
+  MapPin,
+  Calendar,
   FileText,
   Clock,
-  LoaderCircle,
   CheckCircle,
-  AlertTriangle,
-  MapPin,
-  ArrowRight,
+  AlertCircle,
+  LoaderCircle,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -20,8 +21,8 @@ function Dashboard() {
     const fetchAllComplaints = async () => {
       try {
         const token = localStorage.getItem("token");
-        // Fetch all complaints from backend for authority view
-        const res = await axios.get("http://localhost:5000/api/complaints", {
+        // Updated to use Render live backend URL
+        const res = await axios.get("https://trafficsetu.onrender.com/api/complaints", {
           headers: { Authorization: `Bearer ${token}` },
         });
 

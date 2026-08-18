@@ -17,12 +17,12 @@ function Dashboard() {
   const [complaints, setComplaints] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch real complaints from backend API
+  // Fetch real complaints from Render backend API
   useEffect(() => {
     const fetchMyComplaints = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:5000/api/complaints/my', {
+        const response = await axios.get('https://trafficsetu.onrender.com/api/complaints/my', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

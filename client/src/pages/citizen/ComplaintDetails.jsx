@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ArrowLeft,
   MapPin,
@@ -24,7 +24,8 @@ function ComplaintDetails() {
     const fetchComplaintDetails = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get(`http://localhost:5000/api/complaints/${id}`, {
+        // Updated to use Render live backend URL
+        const res = await axios.get(`https://trafficsetu.onrender.com/api/complaints/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -156,6 +157,18 @@ function ComplaintDetails() {
               <p className="text-sm text-slate-500 mb-2">Description</p>
               <p className="text-slate-700 leading-7">{complaint.description}</p>
             </div>
+
+            {/* Supporting Evidence Image if available */}
+            {complaint.evidence && (
+              <div className="pt-4 border-t border-slate-200">
+                <p className="text-sm text-slate-500 mb-2">Supporting Evidence</p>
+                <img 
+                  src={complaint.evidence} 
+                  alt="Complaint Evidence" 
+                  className="w-full max-h-80 object-cover rounded-xl border border-slate-200 shadow-sm"
+                />
+              </div>
+            )}
           </div>
         </div>
 
