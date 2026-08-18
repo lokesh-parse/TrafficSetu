@@ -43,8 +43,8 @@ function Login() {
     }
 
     try {
-      // Connecting Frontend to Backend API
-      const response = await axios.post("http://localhost:5000/api/auth/login", {
+      // Using Vercel Environment Variable for Backend API
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, {
         email: formData.email,
         password: formData.password,
       });
@@ -71,7 +71,6 @@ function Login() {
       }
     } catch (err) {
       console.error("Login error:", err);
-      // Backend validates input and returns explicit error here
       setError(err.response?.data?.message || "Invalid credentials or Server Error");
     }
   };

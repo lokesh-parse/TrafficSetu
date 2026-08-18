@@ -70,13 +70,13 @@ function Register() {
     }
 
     try {
-      // Connecting Frontend to Backend API Registration Route
-      const response = await axios.post("http://localhost:5000/api/auth/register", {
+      // Using Vercel Environment Variable for Backend API
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/register`, {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
         password: formData.password,
-        role: "citizen", // Explicitly set role as citizen
+        role: "citizen",
       });
 
       if (response.data.success) {
