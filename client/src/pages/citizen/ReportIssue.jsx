@@ -126,7 +126,8 @@ function ReportIssue() {
         data.append("evidence", file);
       }
 
-      const res = await axios.post("http://localhost:5000/api/complaints/report", data, {
+      // Updated to use Render live backend URL directly
+      const res = await axios.post("https://trafficsetu.onrender.com/api/complaints/report", data, {
         headers: { 
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data"
