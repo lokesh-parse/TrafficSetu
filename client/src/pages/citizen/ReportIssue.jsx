@@ -11,7 +11,6 @@ import {
   CheckCircle2,
   X,
   Upload,
-  RefreshCw
 } from "lucide-react";
 
 function ReportIssue() {
@@ -42,7 +41,6 @@ function ReportIssue() {
     setError("");
   };
 
-  // 1. Real Browser Geolocation Handler
   const handleGetLocation = () => {
     if (!navigator.geolocation) {
       alert("Geolocation is not supported by your browser");
@@ -67,24 +65,22 @@ function ReportIssue() {
     );
   };
 
-  // 2. File Upload Handler
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setEvidenceFile(file);
       setFileName(file.name);
-      setWebcamImage(null); // Clear webcam image if file is uploaded
+      setWebcamImage(null);
       setCaptureMode(false);
     }
   };
 
-  // 3. Capture Photo from Webcam/Phone Camera
   const capturePhoto = () => {
     const screenshot = webcamRef.current.getScreenshot();
     setWebcamImage(screenshot);
     setCaptureMode(false);
     setFileName("live-camera-capture.jpg");
-    setEvidenceFile(null); // Clear file if webcam is used
+    setEvidenceFile(null);
   };
 
   const handleSubmit = async (e) => {
@@ -119,14 +115,13 @@ function ReportIssue() {
       if (evidenceFile) {
         data.append("evidence", evidenceFile);
       } else if (webcamImage) {
-        // Convert base64 webcam image to File object
         const res = await fetch(webcamImage);
         const blob = await res.blob();
         const file = new File([blob], "evidence-capture.jpg", { type: "image/jpeg" });
         data.append("evidence", file);
       }
 
-      // Updated to use Render live backend URL directly
+      // Direct Render Backend URL
       const res = await axios.post("https://trafficsetu.onrender.com/api/complaints/report", data, {
         headers: { 
           Authorization: `Bearer ${token}`,
@@ -148,7 +143,6 @@ function ReportIssue() {
 
   return (
     <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Header */}
       <div className="mb-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl p-8 text-white shadow-sm">
         <div className="flex items-center gap-4">
           <div className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center">
@@ -161,17 +155,13 @@ function ReportIssue() {
         </div>
       </div>
 
-      {/* Error Message */}
       {error && (
         <div className="mb-6 px-5 py-4 rounded-2xl bg-red-50 border border-red-200 text-sm text-red-700 shadow-sm">
           {error}
         </div>
       )}
 
-      {/* Form */}
       <form onSubmit={handleSubmit} className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-10 shadow-sm space-y-8">
-        
-        {/* Issue Type */}
         <div>
           <label className="block text-sm font-bold text-slate-900 mb-2">Issue Type *</label>
           <select
@@ -192,7 +182,6 @@ function ReportIssue() {
           </select>
         </div>
 
-        {/* Priority Selection */}
         <div>
           <label className="block text-sm font-bold text-slate-900 mb-2">Severity / Priority *</label>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -221,7 +210,6 @@ function ReportIssue() {
           </div>
         </div>
 
-        {/* Description */}
         <div>
           <label className="block text-sm font-bold text-slate-900 mb-2">Detailed Description *</label>
           <textarea
@@ -235,7 +223,6 @@ function ReportIssue() {
           />
         </div>
 
-        {/* Location with Real GPS Integration */}
         <div>
           <label className="block text-sm font-bold text-slate-900 mb-2">Location Details *</label>
           <div className="flex flex-col md:flex-row gap-3">
@@ -260,13 +247,11 @@ function ReportIssue() {
           </div>
         </div>
 
-        {/* Supporting Evidence (Live Camera + File Upload) */}
         <div>
           <label className="block text-sm font-bold text-slate-900 mb-3">Supporting Evidence (Photos / Videos)</label>
           
           {!captureMode && !webcamImage && !evidenceFile && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Option 1: Live Camera */}
               <button
                 type="button"
                 onClick={() => setCaptureMode(true)}
@@ -279,7 +264,6 @@ function ReportIssue() {
                 <p className="text-xs text-slate-500">Capture photo instantly from phone/laptop</p>
               </button>
 
-              {/* Option 2: File Upload */}
               <label className="border-2 border-dashed border-slate-300 bg-slate-50/50 hover:bg-slate-100 rounded-2xl p-6 text-center transition flex flex-col items-center justify-center gap-2 cursor-pointer group">
                 <div className="w-12 h-12 bg-slate-200 text-slate-700 rounded-xl flex items-center justify-center group-hover:scale-105 transition">
                   <Upload size={24} />
@@ -296,7 +280,6 @@ function ReportIssue() {
             </div>
           )}
 
-          {/* Webcam Live Stream View */}
           {captureMode && (
             <div className="relative border-2 border-blue-500 rounded-2xl overflow-hidden bg-black shadow-lg">
               <Webcam
@@ -325,7 +308,6 @@ function ReportIssue() {
             </div>
           )}
 
-          {/* Preview of Attached File or Captured Photo */}
           {(webcamImage || fileName) && !captureMode && (
             <div className="p-4 border border-slate-200 rounded-2xl bg-slate-50 flex items-center justify-between shadow-sm">
               <div className="flex items-center gap-4">
@@ -353,7 +335,6 @@ function ReportIssue() {
           )}
         </div>
 
-        {/* Warning Note */}
         <div className="flex gap-3 bg-amber-50 border border-amber-200/80 rounded-2xl p-4 text-amber-800">
           <AlertTriangle className="text-amber-600 flex-shrink-0" size={20} />
           <p className="text-xs font-medium leading-relaxed">
@@ -361,7 +342,6 @@ function ReportIssue() {
           </p>
         </div>
 
-        {/* Submit Button */}
         <button
           type="submit"
           disabled={loading}
