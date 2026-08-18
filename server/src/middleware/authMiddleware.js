@@ -12,11 +12,9 @@ const authMiddleware = (req, res, next) => {
     }
 
     const token = authHeader.split(" ")[1];
-
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     req.user = decoded;
-
     next();
   } catch (error) {
     return res.status(401).json({
@@ -26,4 +24,6 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
+// 🔥 Provide BOTH Default and Named exports to satisfy all files (authRoutes & complaintRoutes)
+export const protect = authMiddleware;
 export default authMiddleware;

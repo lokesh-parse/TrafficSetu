@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
   ShieldCheck,
   User,
@@ -39,7 +40,7 @@ function Register() {
     setError("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (
@@ -68,61 +69,48 @@ function Register() {
       return;
     }
 
-    // Temporary local demo registration
-    localStorage.setItem(
-      "trafficSetuUser",
-      JSON.stringify({
+    try {
+      // Connecting Frontend to Backend API Registration Route
+      const response = await axios.post("http://localhost:5000/api/auth/register", {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
-        role: "citizen",
-      })
-    );
+        password: formData.password,
+        role: "citizen", // Explicitly set role as citizen
+      });
 
-    alert("Account created successfully!");
-
-    navigate("/login");
+      if (response.data.success) {
+        alert("Account created successfully in database!");
+        navigate("/login");
+      }
+    } catch (err) {
+      console.error("Registration error:", err);
+      setError(err.response?.data?.message || "Registration failed. Server error.");
+    }
   };
 
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-
       <div className="w-full max-w-md">
-
         {/* Brand */}
         <div className="text-center mb-8">
-
           <div className="inline-flex items-center justify-center w-14 h-14 bg-blue-600 rounded-2xl shadow-lg mb-4">
-            <ShieldCheck
-              className="text-white"
-              size={30}
-            />
+            <ShieldCheck className="text-white" size={30} />
           </div>
-
-          <h1 className="text-3xl font-bold text-slate-900">
-            TrafficSetu
-          </h1>
-
-          <p className="text-slate-500 mt-1">
-            Smart Traffic & Public Safety Platform
-          </p>
-
+          <h1 className="text-3xl font-bold text-slate-900">TrafficSetu</h1>
+          <p className="text-slate-500 mt-1">Smart Traffic & Public Safety Platform</p>
         </div>
 
         {/* Register Card */}
         <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 md:p-8">
-
           <div className="mb-6">
-            <h2 className="text-2xl font-bold text-slate-900">
-              Create Account
-            </h2>
-
+            <h2 className="text-2xl font-bold text-slate-900">Create Account</h2>
             <p className="text-sm text-slate-500 mt-1">
               Register to report and track public safety issues.
             </p>
           </div>
 
-          {/* Error */}
+          {/* Error Message Box */}
           {error && (
             <div className="mb-5 px-4 py-3 rounded-xl bg-red-50 border border-red-200 text-sm text-red-700">
               {error}
@@ -130,21 +118,11 @@ function Register() {
           )}
 
           <form onSubmit={handleSubmit}>
-
             {/* Full Name */}
             <div className="mb-4">
-
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                Full Name
-              </label>
-
+              <label className="block text-sm font-semibold text-slate-700 mb-2">Full Name</label>
               <div className="relative">
-
-                <User
-                  size={19}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-                />
-
+                <User size={19} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
                   type="text"
                   name="name"
@@ -153,25 +131,14 @@ function Register() {
                   placeholder="Enter your full name"
                   className="w-full pl-11 pr-4 py-3 border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
-
               </div>
-
             </div>
 
             {/* Email */}
             <div className="mb-4">
-
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                Email Address
-              </label>
-
+              <label className="block text-sm font-semibold text-slate-700 mb-2">Email Address</label>
               <div className="relative">
-
-                <Mail
-                  size={19}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-                />
-
+                <Mail size={19} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
                   type="email"
                   name="email"
@@ -180,25 +147,14 @@ function Register() {
                   placeholder="Enter your email"
                   className="w-full pl-11 pr-4 py-3 border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
-
               </div>
-
             </div>
 
             {/* Phone */}
             <div className="mb-4">
-
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                Phone Number
-              </label>
-
+              <label className="block text-sm font-semibold text-slate-700 mb-2">Phone Number</label>
               <div className="relative">
-
-                <Phone
-                  size={19}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-                />
-
+                <Phone size={19} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
                   type="tel"
                   name="phone"
@@ -207,25 +163,14 @@ function Register() {
                   placeholder="Enter your phone number"
                   className="w-full pl-11 pr-4 py-3 border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
-
               </div>
-
             </div>
 
             {/* Password */}
             <div className="mb-4">
-
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                Password
-              </label>
-
+              <label className="block text-sm font-semibold text-slate-700 mb-2">Password</label>
               <div className="relative">
-
-                <Lock
-                  size={19}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-                />
-
+                <Lock size={19} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
                   type={showPassword ? "text" : "password"}
                   name="password"
@@ -234,39 +179,21 @@ function Register() {
                   placeholder="Create a password"
                   className="w-full pl-11 pr-12 py-3 border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
-
                 <button
                   type="button"
-                  onClick={() =>
-                    setShowPassword((prev) => !prev)
-                  }
+                  onClick={() => setShowPassword((prev) => !prev)}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                 >
-                  {showPassword ? (
-                    <EyeOff size={19} />
-                  ) : (
-                    <Eye size={19} />
-                  )}
+                  {showPassword ? <EyeOff size={19} /> : <Eye size={19} />}
                 </button>
-
               </div>
-
             </div>
 
             {/* Confirm Password */}
             <div className="mb-5">
-
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                Confirm Password
-              </label>
-
+              <label className="block text-sm font-semibold text-slate-700 mb-2">Confirm Password</label>
               <div className="relative">
-
-                <Lock
-                  size={19}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-                />
-
+                <Lock size={19} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
                   type={showConfirmPassword ? "text" : "password"}
                   name="confirmPassword"
@@ -275,28 +202,18 @@ function Register() {
                   placeholder="Confirm your password"
                   className="w-full pl-11 pr-12 py-3 border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
-
                 <button
                   type="button"
-                  onClick={() =>
-                    setShowConfirmPassword((prev) => !prev)
-                  }
+                  onClick={() => setShowConfirmPassword((prev) => !prev)}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                 >
-                  {showConfirmPassword ? (
-                    <EyeOff size={19} />
-                  ) : (
-                    <Eye size={19} />
-                  )}
+                  {showConfirmPassword ? <EyeOff size={19} /> : <Eye size={19} />}
                 </button>
-
               </div>
-
             </div>
 
             {/* Terms */}
             <label className="flex items-start gap-2 text-sm text-slate-600 mb-6 cursor-pointer">
-
               <input
                 type="checkbox"
                 name="terms"
@@ -304,11 +221,7 @@ function Register() {
                 onChange={handleChange}
                 className="w-4 h-4 mt-0.5 rounded border-slate-300 text-blue-600"
               />
-
-              <span>
-                I agree to the TrafficSetu terms and conditions.
-              </span>
-
+              <span>I agree to the TrafficSetu terms and conditions.</span>
             </label>
 
             {/* Submit */}
@@ -319,38 +232,24 @@ function Register() {
               Create Account
               <ArrowRight size={18} />
             </button>
-
           </form>
 
-          {/* Login */}
+          {/* Login Redirect */}
           <div className="text-center mt-6 pt-6 border-t border-slate-100">
-
             <p className="text-sm text-slate-500">
               Already have an account?{" "}
-
-              <Link
-                to="/login"
-                className="font-semibold text-blue-600 hover:text-blue-700"
-              >
+              <Link to="/login" className="font-semibold text-blue-600 hover:text-blue-700">
                 Login
               </Link>
             </p>
-
           </div>
-
         </div>
 
         {/* Footer */}
         <div className="mt-5 text-center">
-
-          <p className="text-xs text-slate-400">
-            TrafficSetu • Citizen & Authority Portal
-          </p>
-
+          <p className="text-xs text-slate-400">TrafficSetu • Citizen & Authority Portal</p>
         </div>
-
       </div>
-
     </div>
   );
 }
